@@ -12,21 +12,29 @@ Hide your messages with the magic of QKD! or: How to do QKD on a single channel 
 ## Motivation and Goals
 Quantum Key Distribution is a provably secure encryption method, conditional only on the laws of physics and the hope that the hackers don't break into your house and demand your password. The goal of QKD is to create a secret key between two parties, Alice and Bob, that can then be used by both parites to encrypt and decrypt a hidden message. *Our* goal is to show the public that quantum computing is not science fiction--and not only that, but it can be used for something you care about: keeping your messages private.
 
+## Our Team's Experience
+This was a challenging but rewarding iQuHack for the QuackAttacks. In a short period of time, we learned Qiskit, Java, and HTML to the degree where we were able to implement an embedded Qiskit script in a webpage. With everyone working on a discrete part of the problem, it was difficult at first to organize and manage tasks. But by the end of the hackathon, we were operating as a team, and we're pretty proud of what we were able to accomplish.
+
 ## Implementation
 For our demonstration, we will run two different encryption protocols: BB84 and E91. BB84 is more well-known, but it is likely that E91 is more useful in the real-world, as qubits can be exchanged remotely via entanglement.
 ### BB84 protocol
 <img src="AliceNBob_2.png" alt="drawing" width="1200"/>
 
 To interface with QuTech's quantum nodes, we set up a website. 
-[image of website][image of circuit]
+<img src="website.png" alt="drawing" width="800"/>
 In order to generate a secret key, Alice inputs to the webpage:
 * a five-digit bit string 
 * a five-part basis state
 * Bob's email address
 
-Using the first two inputs, the website submits to the quantum computer the quantum circuit, which simply operates Alice's basis state on the bit-string to perform a measuremen, the results of which are outputted on the webpage. Bob then inputs to the webpage only his five-part basis state, which then operates on Alice's qubits before being measured to generate a classical result, the results of which are emailed to Bob. [image of website with Bob's inputs][image of circuit][image of code snippet]
+<img src="Alice.png" alt="drawing" width="300"/>
+Using the first two inputs, the website submits to the quantum computer the quantum circuit, which simply operates Alice's basis state on the bit-string to perform a measuremen, the results of which are outputted in an email to Alice. Bob then inputs to the webpage only his five-part basis state, which then operates on Alice's qubits before being measured to generate a classical result, the results of which are emailed to Bob.
 
+<img src="Bob.png" alt="drawing" width="300"/>
+
+<img src="Bob_code_snippet.png" alt="drawing" width="300"/>
 The email sent to Bob contains:
+
 * Bob's measurement basis
 * Bob's measurement output
 
@@ -34,8 +42,9 @@ Then Alice and Bob can communicate independently to discard mismatched bits and 
 * Bob's measurement basis was generated automatically using a random number generator, rather than input by Bob
 * The email sent to Bob contains Alice's measurement basis and the shared secret key, in addition Bob's measurement basis and Bob's measurement output that was originally sent.
 
-[code snippet]
-[image of email]
+
+<img src="interface.png" alt="drawing" width="300"/>
+<img src="email.png" alt="drawing" width="800"/>
 Although this protocol is technically insecure compared to our original implementation, as Bob's measurement basis and the shared secret key could be intercepted, it allows for a more convenient practical proof-of-concept demonstration, as a) we don't have to request that the Starmon-5 wait for Bob to input his measurement basis (which would risk us being timed out), and b) we needn't communicate independently via email in order to generate the shared key. Although we have modified the protocol for the purposes of this demonstration, it is trivial to revert the code back the more cryptographically secure version for actual encryption.
 
 ### E91 protocol
@@ -60,16 +69,19 @@ After public key is generated, Alice and Bob will calculate CHSH correlation val
 
 ### Simulating Eve (hostile eavesdropping)
 In order to demonstrate the security of our protocol, we simulate the operation of Eve, Alice and Bob's nefarious enemy and incurable gossip, who attempts to measure Alice's qubits before they reach Bob.
-[image with Eve toggle...caption: toggle interface to activate eavesdropping]
 When Eve performs her measurements, she destroys the qubit. This will lead to errors in the eventual comparison of Alice and Bob's measurements. If more than half of the bits measured by Alice and Bob do not match, Alice and Bob are sent a message warning them that there communications have been intercepted and thus not to continue generated a shared key from this measurement.
-[screenshot of email]
-[screenshot code snippet enabling Eve]
+To operate, you can type 'y' or 'n' in the box asking "Do you want Eve Detection $1.99?".
 
 ### Encryption and Decryption
 For the sake of this demonstration, we implemented on our website an encryption/decryption functionality. The encryption method is simple: the key bits are added on top of the message. In our case, English was encoded in Morse code, and the key was much smaller than the message. Ideally, the message would be encoded with a scheme that allowed for more characters than Morse code, and the key would be as long as the message to provide maximum security. However, in our case, the key can only be 5 bits long, as we are using the Starmon-5 quantum computer.
 
 <img src="qiskit_morse_drawing.png" alt="drawing" width="600"/>
 <img src="qiskit_morse_code.png" alt="drawing" width="600"/>
+
+### iQuack
+For a bit of fun, we implemented an app that allows you to generate your code as a serious of quacks and squeaks. Currently in beta.
+<img src="iQuack.png" alt="drawing" width="600"/>
+It runs in index.html in the directory DuckFinal_2022_01_30_15_46_33.
 
 ## Background
 Let's walk through the steps of the BB84 protocol:
