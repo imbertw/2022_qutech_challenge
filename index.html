@@ -1,0 +1,71 @@
+<html>
+    <head></head>
+
+<body>
+
+    
+    <form id="form" method="POST">
+        <label for="fname">Bitstring:</label>
+        <input type="text" name="bit"/><br><br>
+        <label for="fname">Basis:</label>
+        <input type="text" id="basis" name="basis"><br><br>
+        <label for="fname">Your Email:</label>
+        <input type="text" id="basis" name="email"><br><br>
+        <select name="protocol">
+          <option name="BB84">BB84</option>
+          <option name="E91">E91</option>
+        </select>
+
+        
+
+
+        <button>Send!</button>
+
+
+
+
+
+
+    </form>
+
+    <script type="text/javascript">
+        
+        const submitData = async (e)=>{
+            
+            e.preventDefault()
+            console.log(e.target.elements)
+            let data = {
+              "bit": e.target.elements.bit.value,
+              "basis": e.target.elements.basis.value,
+              "email": e.target.elements.email.value,
+              "protocol": e.target.elements.protocol.value
+            }
+
+            var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify(data);
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://127.0.0.1:5000", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+                
+            }
+
+        document.getElementById("form").addEventListener("submit", submitData)
+    </script>
+
+
+</body>
+
+
+
+</html>
