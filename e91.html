@@ -28,7 +28,7 @@
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
-  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
@@ -37,7 +37,7 @@
   color: black;
   padding: 12px 16px;
   text-decoration: none;
- 
+  display: block;
 }
 
 /* Change color of dropdown links on hover */
@@ -59,16 +59,13 @@
 
     
     <form id="form" method="POST">
-        <label  for="fname">Bitstring:</label>
-        <input type="text" name="bit"/><br><br>
-        <label for="fname">Basis:</label>
-        <input type="text" id="basis" name="basis"><br><br>
+        <label  for="fname">Length of Key:</label>
+        <input type="text" name="n"/><br><br>
         <label for="fname">Alice's Email:</label>
         <input type="text" id="basis" name="a_email"><br><br>
         <label for="fname">Bob's Email:</label>
         <input type="text" id="basis" name="b_email"><br><br>
-        <label for="fname">Do you want Eve Detection $1.99? (Y/N):</label>
-        <input type="text" id="isEve" name="isEve"><br><br>
+        
         
             
     <br>
@@ -76,18 +73,11 @@
         <div class="dropdown">
   <button class="dropbtn">Protocol</button>
   <div class="dropdown-content">
-    <a href="http://127.0.0.1:8000/bb84.html">BB84</a>
+    <a href="http://127.0.0.1:8000/">BB84</a>
     <a href="http://127.0.0.1:8000/e91.html">E91</a>
-
-
 
     
   </div>
-  <h1>Message Encoder</h1>
-        <p>Securely encrypt a message with a quantum key. Your encrypted message will be sent to bob via a classical channel (Email).</p>
-        <p>Once it's encoded, bob will only be able to decode it when he has the key.</p>
-       <textarea id="message" name="message" rows="6" cols="60"></textarea>
-       <br>
   <button>Send!</button>
 </div>
 
@@ -116,11 +106,10 @@
             e.preventDefault()
             console.log(e.target.elements)
             let data = {
-              "bit": e.target.elements.bit.value,
-              "basis": e.target.elements.basis.value,
-              "a_email": e.target.elements.a_email.value,
-              "b_email": e.target.elements.b_email.value,
-              "isEve": e.target.elements.isEve.value
+              "n": e.target.elements.n.value,
+              "email": e.target.elements.a_email.value,
+              "a_email": e.target.elements.protocol.value,
+              "b_email": e.target.elements.b_email.value
             }
 
             var myHeaders = new Headers();
@@ -135,19 +124,29 @@
       redirect: 'follow'
     };
 
-    fetch("http://127.0.0.1:5000", requestOptions)
+    fetch("http://127.0.0.1:6000", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
                 
             }
 
-    document.getElementById("form").addEventListener("submit", submitData)
+        document.getElementById("form").addEventListener("submit", submitData)
 
 
 
 
-
+    (function () {
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function (message) {
+        if (typeof message == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + '<br />';
+        } else {
+            logger.innerHTML += message + '<br />';
+        }
+    }
+})();
     </script>
 
 

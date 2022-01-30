@@ -28,7 +28,7 @@
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
-  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
@@ -37,7 +37,7 @@
   color: black;
   padding: 12px 16px;
   text-decoration: none;
- 
+  display: block;
 }
 
 /* Change color of dropdown links on hover */
@@ -79,15 +79,8 @@
     <a href="http://127.0.0.1:8000/bb84.html">BB84</a>
     <a href="http://127.0.0.1:8000/e91.html">E91</a>
 
-
-
     
   </div>
-  <h1>Message Encoder</h1>
-        <p>Securely encrypt a message with a quantum key. Your encrypted message will be sent to bob via a classical channel (Email).</p>
-        <p>Once it's encoded, bob will only be able to decode it when he has the key.</p>
-       <textarea id="message" name="message" rows="6" cols="60"></textarea>
-       <br>
   <button>Send!</button>
 </div>
 
@@ -118,8 +111,8 @@
             let data = {
               "bit": e.target.elements.bit.value,
               "basis": e.target.elements.basis.value,
-              "a_email": e.target.elements.a_email.value,
-              "b_email": e.target.elements.b_email.value,
+              "email": e.target.elements.email.value,
+              "protocol": e.target.elements.protocol.value,
               "isEve": e.target.elements.isEve.value
             }
 
@@ -142,12 +135,22 @@
                 
             }
 
-    document.getElementById("form").addEventListener("submit", submitData)
+        document.getElementById("form").addEventListener("submit", submitData)
 
 
 
 
-
+    (function () {
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function (message) {
+        if (typeof message == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + '<br />';
+        } else {
+            logger.innerHTML += message + '<br />';
+        }
+    }
+})();
     </script>
 
 
