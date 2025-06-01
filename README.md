@@ -1,7 +1,7 @@
 # alice-n-bob: An Online Quantum Telegraph 
 
 Hide your messages with the magic of QKD! or: How to do QKD on a single channel quantum computer.
-This project won the Social Good Prize at [`https://www.iquise.mit.edu/iQuHACK/2022-01-28`](MIT's iQuHack Hackathon) in 2022.
+This project won the Social Good Prize at [`MIT's iQuHack Hackathon`](https://www.iquise.mit.edu/iQuHACK/2022-01-28) in 2022.
 
 ## Website
 
